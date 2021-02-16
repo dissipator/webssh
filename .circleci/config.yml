@@ -9,13 +9,16 @@ jobs:
     docker:
     - image: bash:4.4.19
     steps:
-    - run:
-        name: init
-        command: |
-          echo 1
+    - name: Initialization environment
+    - run: |
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804)
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
 workflows:
   version: 2
   build:
     jobs:
-    - build
     - welcome/run
